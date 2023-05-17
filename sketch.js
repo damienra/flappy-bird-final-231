@@ -22,6 +22,9 @@ function draw() {
         if (!pipes[i].scored) {
           fails++;
           pipes[i].scored = true;
+          if (fails === 3) {
+            gameover = true;
+          }
         }
       }
 
@@ -62,18 +65,33 @@ function draw() {
 
 function keyPressed() {
   if (key === " ") {
-    bird.up();
+    if (gameover) {
+      // Restart the game
+      gameover = false;
+      pipes = [];
+      bird = new Bird();
+      pipes.push(new Pipe(gameover));
+      fails = 0;
+      timer = 0;
+    } else {
+      bird.up();
+    }
   }
 }
 
 function mousePressed() {
   if (gameover) {
-    // Reset the game
+    // Restart the game
     gameover = false;
     pipes = [];
     bird = new Bird();
     pipes.push(new Pipe(gameover));
     fails = 0;
     timer = 0;
+  } else {
+    bird.up();
   }
 }
+
+// Add this line to initialize the game
+setup();
